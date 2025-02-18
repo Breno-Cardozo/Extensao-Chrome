@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Guardar Infos de Produtos",
+    "version": "1.0",
+    "description": "Captura informações essenciais do produto selecionado ao clicar no botão.",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting",
+        "activeTab",
+        "tabs",
+        "storage"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ]
+}

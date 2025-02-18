@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="tela-inicial" class="fundo">
+        <h1>Capture Infos</h1>
+        <p>Guarde as informações atuais do produto selecionado ao clicar no botão abaixo</p>
+        <button id="botao">Capturar</button>
+    </div>
+
+    <div id="tela-produto" class="fundo" style="display: none;">
+        <h2>Meus Produtos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Loja</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Link</th>
+                    <th>Imagem</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="lista-produtos">
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
