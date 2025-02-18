@@ -48,28 +48,28 @@ document.getElementById('botao').addEventListener('click', async () => {
         if (result && result.result) {
             let novoProduto = result.result;
 
-            // Pega os produtos já salvos
             chrome.storage.local.get({ produtos: [] }, (data) => {
                 let produtos = data.produtos;
 
-                // Adiciona o novo produto à lista
                 produtos.push(novoProduto);
 
-                // Salva de volta no storage
                 chrome.storage.local.set({ produtos }, () => {
                     console.log("Produto salvo:", novoProduto);
-                    carregarProdutos(); // Atualiza a lista exibida
+                    carregarProdutos();
                 });
             });
         }
     }
 });
 
-// Função para carregar os produtos ao abrir a extensão
 function carregarProdutos() {
     chrome.storage.local.get({ produtos: [] }, (data) => {
         let lista = document.getElementById('lista-produtos');
-        lista.innerHTML = ""; // Limpa a lista antes de renderizar
+        lista.innerHTML = "";
+
+        if (data.produtos.length < 1) {
+            document.getElementById('tela-produto').style.display = "none";
+        }
 
         data.produtos.forEach((produto, index) => {
             document.getElementById('tela-produto').style.display = "flex";
@@ -85,13 +85,12 @@ function carregarProdutos() {
                     <img src="${produto.imageUrl}" style="max-width: 40px;">
                 </td>
                 <td>
-                    <button class="remove-btn" data-index="${index}">Remover</button>
+                    <button class="remove-btn" data-index="${index}">X</button>
                 </td>
             `;
             lista.appendChild(item);
         });
 
-        // Adiciona evento de clique para cada botão "Remover"
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', () => {
                 let index = button.getAttribute("data-index");
@@ -101,17 +100,15 @@ function carregarProdutos() {
     });
 }
 
-// Função para remover um produto pelo índice
 function removerProduto(index) {
     chrome.storage.local.get({ produtos: [] }, (data) => {
         let produtos = data.produtos;
-        produtos.splice(index, 1); // Remove o item da lista
+        produtos.splice(index, 1);
 
         chrome.storage.local.set({ produtos }, () => {
-            carregarProdutos(); // Atualiza a interface
+            carregarProdutos();
         });
     });
 }
 
-// Carrega os produtos ao abrir a extensão
 document.addEventListener('DOMContentLoaded', carregarProdutos);

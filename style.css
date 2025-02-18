@@ -36,6 +36,9 @@ body {
     border-radius: 8px;
     outline: none;
     border: none;
+    background-color: #1e1e1e;
+    color: #eee9e9;
+    cursor: pointer;
 }
 
 table {
@@ -65,8 +68,8 @@ tbody tr:last-child td:last-child {
 
 thead th {
     padding: 8px;
-    border: 1px solid black;
-    background-color: #f1f1f1;
+    background-color: #1e1e1e;
+    color: #eee9e9;
     font-weight: bold;
 }
 
@@ -82,4 +85,20 @@ td {
     white-space: normal;
     text-align: center;
     max-width: 80px;
+}
+
+tr a {
+    text-decoration: none;
+    font-weight: 800;
+    color: black;
+}
+
+tr button {
+    background-color: #1e1e1e;
+    color: #eee9e9;
+    cursor: pointer;
+    border-radius: 16px;
+    font-size: 16px;
+    outline: none;
+    border: 1px solid #eee9e9;
 }
