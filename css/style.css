@@ -33,12 +33,21 @@ body {
 
 #botao {
     padding: 16px;
+    font-weight: 700;
     border-radius: 8px;
     outline: none;
     border: none;
     background-color: #1e1e1e;
     color: #eee9e9;
     cursor: pointer;
+}
+
+#botao:hover {
+    background-color: #eee9e9;
+    color: #1e1e1e;
+    font-weight: 700;
+    border: 1px solid #1e1e1e;
+    transition: background-color 0.5s;
 }
 
 table {
@@ -84,7 +93,7 @@ td {
     overflow-wrap: break-word;
     white-space: normal;
     text-align: center;
-    max-width: 80px;
+    max-width: 60px;
 }
 
 tr a {
@@ -94,11 +103,21 @@ tr a {
 }
 
 tr button {
-    background-color: #1e1e1e;
+    background-color: #d10808;
     color: #eee9e9;
     cursor: pointer;
     border-radius: 16px;
     font-size: 16px;
     outline: none;
     border: 1px solid #eee9e9;
+}
+
+tr button:hover {
+    background-color: #4e4b4b;
+    transition: background-color 0.5s;
+}
+
+tr a:hover {
+    color: #4e4b4b;
+    transition: color 0.5s;
 }

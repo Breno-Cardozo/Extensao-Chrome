@@ -6,7 +6,7 @@ document.getElementById('botao').addEventListener('click', async () => {
             target: { tabId: tab.id },
             args: [tab.url],
             func: (url) => {
-                const site = new URL(url).hostname
+                site = new URL(url).hostname
                     .replace(/^www\./, '')
                     .replace(/\.com/, '')
                     .replace(/\.br$/, '')
@@ -23,21 +23,25 @@ document.getElementById('botao').addEventListener('click', async () => {
                         produto = document.querySelector('h1.ui-pdp-title')?.innerText || produto;
                         preco = document.querySelector('span[aria-roledescription="Preço"]')?.innerText || preco;
                         imageUrl = document.querySelector('img[data-index="0"]')?.src || imageUrl;
+                        site = "Mercado Livre"
                         break;
                     case "PRODUTO.MERCADOLIVRE":
                         produto = document.querySelector('h1.ui-pdp-title')?.innerText || produto;
                         preco = document.querySelector('span[aria-roledescription="Preço"]')?.innerText || preco;
                         imageUrl = document.querySelector('img[data-index="0"]')?.src || imageUrl;
+                        site = "Mercado Livre"
                         break;
                     case "ALIBABA":
                         produto = document.querySelector('h1')?.innerText || produto;
                         preco = document.querySelector('div.price-list')?.innerText || preco;
                         imageUrl = document.querySelector('img.id-h-full.id-w-full.id-object-contain')?.src || imageUrl;
+                        site = "AliBaba"
                         break;
                     case "ALIEXPRESS":
                         produto = document.querySelector('h1[data-pl="product-title"]')?.innerText || produto;
                         preco = document.querySelector('span.price--currentPriceText--V8_y_b5.pdp-comp-price-current.product-price-value')?.innerText || preco;
                         imageUrl = document.querySelector('img[style="transform: translate(0px, 0px);"]')?.src || imageUrl;
+                        site = "AliExpress"
                         break;
                 }
 
@@ -79,6 +83,11 @@ function carregarProdutos() {
                 <td>${produto.produto}</td>
                 <td>${produto.preco}</td>
                 <td>
+                ${produto.historicoPrecos && produto.historicoPrecos.length > 0 ? `
+                        ${produto.historicoPrecos.map(h => `<div>${h.preco} - ${h.data}</div>`).join('')}
+                ` : '-'}
+                </td>
+                <td>
                     <a href="${produto.linkProduto}" target="_blank">Link do anúncio</a>
                 </td>
                 <td>
@@ -88,6 +97,7 @@ function carregarProdutos() {
                     <button class="remove-btn" data-index="${index}">X</button>
                 </td>
             `;
+
             lista.appendChild(item);
         });
 
