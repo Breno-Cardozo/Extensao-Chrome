@@ -5,46 +5,67 @@ document.getElementById('botao').addEventListener('click', async () => {
         let [result] = await chrome.scripting.executeScript({
             target: { tabId: tab.id },
             args: [tab.url],
-            func: (url) => {
-                site = new URL(url).hostname
-                    .replace(/^www\./, '')
-                    .replace(/\.com/, '')
-                    .replace(/\.br$/, '')
-                    .replace(/^pt\./, '')
-                    .toUpperCase();
-
+            func: async (url) => {
+                let site = new URL(url).hostname.replace(/^www\./, '').replace(/\.com/, '').replace(/\.br$/, '').replace(/^pt\./, '').toUpperCase();
                 let produto = "Produto não encontrado";
                 let preco = "Preço não encontrado";
                 let imageUrl = "Imagem não encontrada";
                 let linkProduto = url;
 
-                switch (site) {
-                    case "MERCADOLIVRE":
-                        produto = document.querySelector('h1.ui-pdp-title')?.innerText || produto;
-                        preco = document.querySelector('span[aria-roledescription="Preço"]')?.innerText || preco;
-                        imageUrl = document.querySelector('img[data-index="0"]')?.src || imageUrl;
-                        site = "Mercado Livre"
-                        break;
-                    case "PRODUTO.MERCADOLIVRE":
-                        produto = document.querySelector('h1.ui-pdp-title')?.innerText || produto;
-                        preco = document.querySelector('span[aria-roledescription="Preço"]')?.innerText || preco;
-                        imageUrl = document.querySelector('img[data-index="0"]')?.src || imageUrl;
-                        site = "Mercado Livre"
-                        break;
-                    case "ALIBABA":
-                        produto = document.querySelector('h1')?.innerText || produto;
-                        preco = document.querySelector('div.price-list')?.innerText || preco;
-                        imageUrl = document.querySelector('img.id-h-full.id-w-full.id-object-contain')?.src || imageUrl;
-                        site = "AliBaba"
-                        break;
-                    case "ALIEXPRESS":
-                        produto = document.querySelector('h1[data-pl="product-title"]')?.innerText || produto;
-                        preco = document.querySelector('span.price--currentPriceText--V8_y_b5.pdp-comp-price-current.product-price-value')?.innerText || preco;
-                        imageUrl = document.querySelector('img[style="transform: translate(0px, 0px);"]')?.src || imageUrl;
-                        site = "AliExpress"
-                        break;
-                }
+                let data = await chrome.storage.local.get("customSites");
+                let customSites = data.customSites || {};
 
+                if (customSites[site]) {
+                    let seletorProduto = customSites[site].produto;
+                    let seletorPreco = customSites[site].preco;
+                    let seletorImagem = customSites[site].imagem;
+                    let seletorEstruturaProduto = customSites[site].estruturaProduto;
+                    let seletorEstruturaPreco = customSites[site].estruturaPreco;
+                    let seletorEstruturaImagem = customSites[site].estruturaImagem;
+
+
+
+
+                    produto = document.querySelector(seletorProduto)?.innerText
+                        || document.getElementById(seletorProduto)?.innerText
+                        || document.querySelector(seletorEstruturaProduto)?.innerText
+                        || produto;
+
+                    preco = document.querySelector(seletorPreco)?.innerText
+                        || document.getElementById(seletorPreco)?.innerText
+                        || document.querySelector(seletorEstruturaPreco)?.innerText
+                        || preco;
+
+                    imageUrl = document.querySelector(seletorImagem)?.src
+                        || document.getElementById(seletorImagem)?.src
+                        || document.querySelector(seletorEstruturaImagem)?.src
+                        || imageUrl;
+                }
+                else {
+                    switch (site) {
+                        case "MERCADOLIVRE":
+                        case "PRODUTO.MERCADOLIVRE":
+                            produto = document.querySelector('h1.ui-pdp-title')?.innerText || produto;
+                            preco = document.querySelector('span[aria-roledescription="Preço"]')?.innerText || preco;
+                            imageUrl = document.querySelector('img[data-index="0"]')?.src || imageUrl;
+                            site = "Mercado Livre";
+                            break;
+                        case "ALIBABA":
+                            produto = document.querySelector('h1')?.innerText || produto;
+                            preco = document.querySelector('div.price-list')?.innerText || preco;
+                            imageUrl = document.querySelector('img.id-h-full.id-w-full.id-object-contain')?.src || imageUrl;
+                            site = "AliBaba";
+                            break;
+                        case "ALIEXPRESS":
+                            produto = document.querySelector('h1[data-pl="product-title"]')?.innerText || produto;
+                            preco = document.querySelector('span.price--currentPriceText--V8_y_b5.pdp-comp-price-current.product-price-value')?.innerText || preco;
+                            imageUrl = document.querySelector('img[style="transform: translate(0px, 0px);"]')?.src || imageUrl;
+                            site = "AliExpress";
+                            break;
+                        default:
+                            return { site, unsupported: true };
+                    }
+                }
                 return { produto, preco, imageUrl, site, linkProduto };
             }
         });
@@ -52,11 +73,26 @@ document.getElementById('botao').addEventListener('click', async () => {
         if (result && result.result) {
             let novoProduto = result.result;
 
+            if (novoProduto.unsupported) {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ["js/content-script.js"]
+                });
+
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    func: (site) => {
+                        window.postMessage({ tipo: "abrir-modal", site }, "*");
+                    },
+                    args: [novoProduto.site]
+                });
+
+                return;
+            }
+
             chrome.storage.local.get({ produtos: [] }, (data) => {
                 let produtos = data.produtos;
-
                 produtos.push(novoProduto);
-
                 chrome.storage.local.set({ produtos }, () => {
                     console.log("Produto salvo:", novoProduto);
                     carregarProdutos();
@@ -65,6 +101,7 @@ document.getElementById('botao').addEventListener('click', async () => {
         }
     }
 });
+
 
 function carregarProdutos() {
     chrome.storage.local.get({ produtos: [] }, (data) => {

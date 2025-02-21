@@ -92,3 +92,16 @@ async function obterNovoPreco(url) {
     });
 }
 
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.tipo === "salvarSeletores") {
+        chrome.storage.local.get({ customSites: {} }, (data) => {
+            let customSites = data.customSites;
+            customSites[message.site] = message.seletores;
+            chrome.storage.local.set({ customSites }, () => {
+                console.log("Seletores salvos:", customSites);
+            });
+        });
+    }
+});
+
