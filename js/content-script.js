@@ -83,9 +83,9 @@
 
             #custom-site-modal {
                 position: fixed;
-                top: 5%;
+                top: 50%;
                 left: 50%;
-                transform: translate(-50%, -5%);
+                transform: translate(-50%, -50%);
                 z-index: 10000;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             }

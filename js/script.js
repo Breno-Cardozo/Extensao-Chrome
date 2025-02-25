@@ -24,10 +24,8 @@ document.getElementById('botao').addEventListener('click', async () => {
                     let seletorEstruturaImagem = customSites[site].estruturaImagem;
 
 
-
-
                     produto = document.querySelector(seletorProduto)?.innerText
-                        || document.getElementById(seletorProduto)?.innerText
+                        || document.getElementById(seletorProduto)?.sinnerText
                         || document.querySelector(seletorEstruturaProduto)?.innerText
                         || produto;
 
