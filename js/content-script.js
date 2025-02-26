@@ -136,6 +136,20 @@
                 border: 1px solid #4de2e8;
                 background-color: #173147
             }
+
+            #custom-site-content #fechar-modal {
+                background-color: #9b0a0a;
+                color: #eee9e9;
+                transition: background-color 0.5s;
+                border: none;
+            }
+
+            #custom-site-content #fechar-modal:hover {
+                background-color: #d10808;
+                color: #eee9e9;
+                transition: background-color 0.5s;
+                border: none;
+            }
         `;
         document.head.appendChild(style);
     }

@@ -1,5 +1,7 @@
 * {
     font-family: "Inter", serif;
+    margin: 0;
+    padding: 0;
 }
 
 ::-webkit-scrollbar {
@@ -27,7 +29,7 @@ body {
 
 .logo {
     display: flex;
-    justify-content: center;
+    align-items: center;
     padding: 16px;
 }
 
@@ -42,9 +44,11 @@ body {
     justify-content: center;
     width: 450px;
     padding: 8px;
+    gap: 8px;
 }
 
-#botao {
+#botao,
+button {
     background-color: #214969;
     color: #4de2e8;
     font-weight: 700;
@@ -55,9 +59,17 @@ body {
     transition: border 0.5s, background-color 0.5s;
 }
 
-#botao:hover {
+#botao:hover,
+button:hover {
     border: 1px solid #4de2e8;
     background-color: #173147
+}
+
+
+.categoria-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 table {
@@ -113,14 +125,24 @@ tr a {
     color: #fff;
 }
 
-tr button {
-    background-color: #d10808;
+.remove-btn {
+    background-color: #9b0a0a;
     color: #eee9e9;
     cursor: pointer;
     border-radius: 16px;
     font-size: 16px;
     outline: none;
     border: 1px solid #eee9e9;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    transition: background-color 0.5s;
+}
+
+.remove-btn:hover {
+    background-color: #d10808;
+    transition: background-color 0.5s;
 }
 
 tr button:hover {
@@ -131,4 +153,138 @@ tr button:hover {
 tr a:hover {
     color: #4de2e8;
     transition: color 0.5s;
+}
+
+#tela-produto {
+    flex-direction: column;
+
+    .edit-category {
+        background-color: #214969;
+        color: #4de2e8;
+        font-weight: 700;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+        transition: border 0.5s, background-color 0.5s;
+    }
+
+    .edit-category:hover {
+        border: 1px solid #4de2e8;
+        background-color: #173147
+    }
+
+    .delete-category {
+        padding: 8px;
+        background-color: #9b0a0a;
+        color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    .delete-category:hover {
+        background-color: #d10808;
+        color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    .categoria-header {
+        gap: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+}
+
+#escolha-categoria {
+    margin: 4px;
+    padding: 12px;
+    background-color: #173147;
+    border: 1px solid #4de2e8;
+    border-radius: 8px;
+
+    #categoria-content {
+        gap: 8px;
+        display: flex;
+        flex-direction: column;
+
+        div {
+            gap: 8px;
+            display: flex;
+        }
+    }
+
+    input {
+        width: 150px;
+        background-color: #214969;
+        color: #4de2e8;
+        font-weight: 500;
+        padding: 8px;
+        border-radius: 8px;
+        border: none;
+        margin-right: 8px;
+    }
+
+    input:hover {
+        border: 1px solid #4de2e8;
+    }
+
+    ::placeholder {
+        font-weight: 500;
+        color: #4de2e8;
+        opacity: 0.3;
+    }
+
+    select {
+        width: 80px;
+        background-color: #214969;
+        color: #4de2e8;
+        font-weight: 500;
+        padding: 8px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        margin-right: 8px;
+    }
+
+    select:hover {
+        border: 1px solid #4de2e8;
+    }
+
+    #fechar-modal,
+    .delete-category {
+        background-color: #9b0a0a;
+        color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    #fechar-modal:hover,
+    .delete-category:hover {
+        background-color: #d10808;
+        color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    button {
+        background-color: #214969;
+        color: #4de2e8;
+        font-weight: 500;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+        transition: border 0.5s, background-color 0.5s;
+    }
+
+    button:hover {
+        border: 1px solid #4de2e8;
+        background-color: #173147
+    }
+}
+
+h3 {
+    font-size: 16px;
 }
