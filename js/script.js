@@ -13,7 +13,7 @@ document.getElementById('botao').addEventListener('click', async () => {
                     .replace(/^pt\./, '')
                     .toUpperCase();
 
-                let produto = "Produto não encontrado";
+                let produto = "Produto não encontrado"; 
                 let preco = "Preço não encontrado";
                 let imageUrl = "Imagem não encontrada";
                 let linkProduto = url;
@@ -396,5 +396,9 @@ function removerProduto(categoria, index) {
         });
     });
 }
+
+document.getElementById("x").addEventListener("click", () => {
+    window.close(); 
+});
 
 document.addEventListener('DOMContentLoaded', carregarProdutos);
