@@ -24,5 +24,15 @@
     },
     "host_permissions": [
         "<all_urls>"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "libs/papaparse.min.js"
+            ],
+            "matches": [
+                "chrome-extension://*/*"
+            ]
+        }
     ]
 }

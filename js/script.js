@@ -13,7 +13,7 @@ document.getElementById('botao').addEventListener('click', async () => {
                     .replace(/^pt\./, '')
                     .toUpperCase();
 
-                let produto = "Produto não encontrado"; 
+                let produto = "Produto não encontrado";
                 let preco = "Preço não encontrado";
                 let imageUrl = "Imagem não encontrada";
                 let linkProduto = url;
@@ -114,9 +114,9 @@ function escolherCategoria(produto) {
                             Geral
                         </option>
                     </select>
-                    <button id="adicionar-categoria">Adicionar nova categoria</button>
                     <button id="salvar-categoria">Salvar</button>
                     <button id="fechar-modal" >Cancelar</button>
+                    <button id="adicionar-categoria">Adicionar nova categoria</button>
                 </div>
             </div>
         </div>
@@ -241,9 +241,15 @@ function carregarProdutos() {
             btnApagar.classList.add("delete-category");
             btnApagar.setAttribute("data-categoria", categoria);
 
+            let btnGerarPlanilha = document.createElement("button");
+            btnGerarPlanilha.textContent = "Gerar planilha";
+            btnGerarPlanilha.classList.add("gerar-planilha");
+            btnGerarPlanilha.setAttribute("data-categoria", categoria);
+
             tituloContainer.appendChild(titulo);
             tituloContainer.appendChild(btnEditar);
             tituloContainer.appendChild(btnApagar);
+            tituloContainer.appendChild(btnGerarPlanilha);
 
             divCategoria.appendChild(tituloContainer);
 
@@ -325,6 +331,13 @@ function carregarProdutos() {
                 excluirCategoria(categoria);
             });
         });
+
+        document.querySelectorAll('.gerar-planilha').forEach(button => {
+            button.addEventListener('click', () => {
+                let categoria = button.getAttribute("data-categoria");
+                exportarCSV(categoria);
+            });
+        })
     });
 }
 
@@ -397,8 +410,43 @@ function removerProduto(categoria, index) {
     });
 }
 
+function exportarCSV(categoria) {
+    chrome.storage.local.get({ produtosPorCategoria: {} }, (data) => {
+        let produtos = data.produtosPorCategoria[categoria];
+
+        if (!produtos || produtos.length === 0) {
+            alert(`Nenhum produto encontrado na categoria "${categoria}"`);
+            return;
+        }
+
+        let csv = Papa.unparse(produtos.map(produto => ({
+            "Loja": produto.site,
+            "Produto": produto.produto,
+            "Preço": produto.preco,
+            "Histórico de Preço": produto.historicoPrecos ?
+                produto.historicoPrecos.map(h => `${h.preco} - ${h.data}`).join(" | ") : "-",
+            "Link": produto.linkProduto,
+            "Imagem": produto.imageUrl
+        })), {
+            delimiter: ";",
+            quotes: true,
+            skipEmptyLines: true
+        });
+
+        let BOM = "\uFEFF";
+        let blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
+
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Produtos_${categoria.replace(/\s+/g, "_")}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
+
 document.getElementById("x").addEventListener("click", () => {
-    window.close(); 
+    window.close();
 });
 
 document.addEventListener('DOMContentLoaded', carregarProdutos);

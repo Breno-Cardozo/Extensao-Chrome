@@ -17,7 +17,7 @@
     border-radius: 8px;
 }
 
-#x{
+#x {
     top: 5%;
     right: 3%;
     position: absolute;
@@ -176,7 +176,6 @@ tr a:hover {
         font-weight: 700;
         padding: 8px;
         border-radius: 8px;
-        cursor: pointer;
         border: none;
         transition: border 0.5s, background-color 0.5s;
     }
@@ -197,6 +196,20 @@ tr a:hover {
     .delete-category:hover {
         background-color: #d10808;
         color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    .gerar-planilha {
+        padding: 8px;
+        background-color: #0a8150;
+        color: #eee9e9;
+        transition: background-color 0.5s;
+        border: none;
+    }
+
+    .gerar-planilha:hover {
+        background-color: #17d485;
         transition: background-color 0.5s;
         border: none;
     }
